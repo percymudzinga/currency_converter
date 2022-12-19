@@ -10,8 +10,11 @@ import 'package:hive/hive.dart';
 import '../exceptions/api_exception.dart';
 
 class CurrenciesRepository {
-  Future<List<Currency>> getCurrencies() async {
-    var box = Hive.box<Currency>(HiveConstants.currencies);
+  final HiveInterface hive;
+
+  CurrenciesRepository({required this.hive});
+  List<Currency> getCurrencies() {
+    var box = hive.box<Currency>(HiveConstants.currencies);
     return box.values.toList();
   }
 
@@ -32,12 +35,12 @@ class CurrenciesRepository {
   }
 
   saveCurrencyToDb(Currency currency) async {
-    var box = Hive.box<Currency>('currencies');
+    var box = hive.box<Currency>('currencies');
     await box.put(currency.code, currency.copyWith(isMonitored: true));
   }
 
   Future saveCurrenciesToLocal(List<Currency> currencies) async {
-    var box = Hive.box<Currency>(HiveConstants.currencies);
+    var box = hive.box<Currency>(HiveConstants.currencies);
     await box.clear();
     for (var currency in currencies) {
       await box.put(currency.code, currency);
@@ -45,7 +48,7 @@ class CurrenciesRepository {
   }
 
   Future deleteCurrency(Currency currency) async {
-    var box = Hive.box<Currency>(HiveConstants.currencies);
+    var box = hive.box<Currency>(HiveConstants.currencies);
     await box.put(currency.code, currency.copyWith(isMonitored: false));
   }
 }
