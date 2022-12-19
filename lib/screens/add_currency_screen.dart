@@ -18,6 +18,11 @@ class AddCurrencyScreen extends StatelessWidget {
         if (state is CurrenciesLoaded) {
           return _buildCurrenciesList(state.currencies);
         }
+
+        if (state is CurrenciesException) {
+          _buidErrorPage(state.message);
+        }
+
         return _buildLoading();
       }),
     );
@@ -26,6 +31,18 @@ class AddCurrencyScreen extends StatelessWidget {
   Widget _buildLoading() {
     return const Center(
       child: CircularProgressIndicator(),
+    );
+  }
+
+  Widget _buidErrorPage(String message) {
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Center(
+        child: Text(
+          message,
+          textAlign: TextAlign.center,
+        ),
+      ),
     );
   }
 

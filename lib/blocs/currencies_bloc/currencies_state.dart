@@ -19,3 +19,12 @@ class CurrenciesLoaded extends CurrenciesState {
   @override
   List<Object> get props => [currencies];
 }
+
+class CurrenciesException extends CurrenciesState {
+  final String message;
+
+  const CurrenciesException({required this.message});
+
+  @override
+  List<Object> get props => [message];
+}

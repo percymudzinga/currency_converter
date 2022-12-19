@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:http/http.dart' show Client;
 
 class HttpUtils {
@@ -8,11 +10,18 @@ class HttpUtils {
   static HttpUtils get instance => _instance;
 
   Future<HttpResponse> get(Uri uri, {Map<String, String>? headers}) async {
-    var response = await client.get(uri, headers: headers);
-    return HttpResponse(
-      data: response.body,
-      status: response.statusCode == 200 ? Status.success : Status.failure,
-    );
+    try {
+      var response = await client.get(uri, headers: headers);
+      return HttpResponse(
+        data: response.body,
+        status: response.statusCode == 200 ? Status.success : Status.failure,
+      );
+    } on TimeoutException {
+      return HttpResponse(
+        data: 'The request took longer than expected. Try again later.',
+        status: Status.failure,
+      );
+    }
   }
 }
 

@@ -18,6 +18,17 @@ class HomeScreen extends StatelessWidget {
       body: BlocBuilder<SavedCurrenciesBloc, SavedCurrenciesState>(
         builder: (context, state) {
           if (state is SavedCurrencies) {
+            if (state.currencies.isEmpty) {
+              return const Padding(
+                padding: EdgeInsets.all(16),
+                child: Center(
+                  child: Text(
+                    "Please click + to add currencies to monitor.",
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              );
+            }
             return ListView.builder(
               itemBuilder: (context, index) {
                 var currency = state.currencies[index];
