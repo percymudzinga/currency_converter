@@ -42,11 +42,19 @@ class _CurrencyScreenState extends State<CurrencyScreen> {
         listener: (context, state) {
           if (state is SelectedCurrency) {
             if (state.baseAmount != null && !_isBaseTyping) {
-              _baseController.text = state.baseAmount!.toStringAsFixed(2);
+              if (state.baseAmount == 0) {
+                _baseController.clear();
+              } else {
+                _baseController.text = state.baseAmount!.toStringAsFixed(2);
+              }
             }
 
             if (state.currencyAmount != null && _isBaseTyping) {
-              _currencyController.text = state.currencyAmount!.toStringAsFixed(2);
+              if (state.currencyAmount == 0) {
+                _currencyController.clear();
+              } else {
+                _currencyController.text = state.currencyAmount!.toStringAsFixed(2);
+              }
             }
           }
         },
